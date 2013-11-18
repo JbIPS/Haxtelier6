@@ -1,0 +1,4 @@
+-main MyDialog
+-cp src
+-swf bin/MyDialog.swf
+-swf-header 600:400:60:0xFFFFFF
