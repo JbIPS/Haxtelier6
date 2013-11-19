@@ -1,5 +1,6 @@
 package ;
 
+import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 import flash.events.MouseEvent;
 import flash.display.Shape;
@@ -12,9 +13,8 @@ class MyDialog extends Sprite{
 
 	private var textField: TextField;
 	private var nextButton: SimpleButton;
-	private var texts: Array<String>;
 	private var textIndex: Int = 0;
-	private var pattern: Pattern;
+	private var currentPattern: Pattern;
 
 	/**
 	* Méthode d'entrée du programme
@@ -29,9 +29,11 @@ class MyDialog extends Sprite{
 	{
 		// Appel du constructeur de Sprite
 		super();
-		texts = ["Salut", "tu", "vas", "bien ?"];
-		var newPattern = {name: "Pattern2", texts: ["Bien", "et toi ?"], next: null};
-		pattern = {name: "Pattern", texts: texts, next: newPattern};
+
+		// Création des patterns
+		var pattern1 = {name: "Pattern2", texts: ["Bien", "et toi ?"], next: null};
+		var pattern0 = {name: "Pattern", texts: ["Salut", "tu", "vas", "bien ?"], next: pattern1};
+		currentPattern = pattern0;
 
 		textField = new TextField();
 
@@ -42,10 +44,14 @@ class MyDialog extends Sprite{
 		shape.graphics.drawRect(0, 0, 100, 50);
 		shape.graphics.endFill();
 		var buttonText = new TextField();
+		buttonText.autoSize = TextFieldAutoSize.CENTER;
 		buttonText.defaultTextFormat = new TextFormat("_sans", 10, 0xFFFFFF);
 		buttonText.text = "Suivant";
 		buttonContent.addChild(shape);
 		buttonContent.addChild(buttonText);
+		// Centre le texte
+		buttonText.x = shape.width / 2 - buttonText.width / 2;
+		buttonText.y = shape.height /2 - buttonText.height / 2;
 		// 3 états du bouton + zone de clic
 		nextButton = new SimpleButton(buttonContent, buttonContent, buttonContent, buttonContent);
 		nextButton.x = 500;
@@ -71,23 +77,26 @@ class MyDialog extends Sprite{
 
 	private function displayNextText():Void
 	{
-		// Vérifier l'indice pour ne pas sortir du tableau
-		if(textIndex < pattern.texts.length){
-			if(pattern != null){
-				setText(pattern.texts[textIndex]);
-				textIndex++;
-			}
+		// Vérifier l'indice pour ne pas sortir du tableau et que currentPattern n'est pas null
+		if(currentPattern != null && textIndex < currentPattern.texts.length){
+			setText(currentPattern.texts[textIndex]);
+			textIndex++;
+			// En une ligne
+			// setText(texts[textIndex++]);
 		}
-		else{
-			pattern = pattern.next;
+		else if(currentPattern != null){
+			// On pourrait aussi désactiver le bouton quand currentPattern est null
+			// nextButton.enabled = false;
+			// ou carrément lui supprimer son listener
+			// nextButton.removeEventListener(MouseEvent.CLICK, onButtonClick);
+			currentPattern = currentPattern.next;
 			textIndex = 0;
 			displayNextText();
 		}
-		// En une ligne
-		// setText(texts[textIndex++]);
 	}
 
-	private function setText(text:String):Void
+	// inline : optimisation à la compilation
+	private inline function setText(text:String):Void
 	{
 		textField.text = text;
 	}
