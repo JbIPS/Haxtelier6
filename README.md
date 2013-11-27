@@ -13,9 +13,7 @@ Objectifs de l'atelier
 Déroulement de l'atelier
 ------------------------
 
-1. Présentation du langage Haxe et de l'API Flash
-    Liens utiles : [API Haxe](http://api.haxe.org/), [Doc Haxe](http://haxe.org/doc/)
-    
+1. Présentation du langage Haxe et de l'API Flash (Liens utiles : [API Haxe](http://api.haxe.org/), [Doc Haxe](http://haxe.org/doc/))
 2. Affichage de texte et interactivité
 3. Complexification du dialogue
 4. Idées d'amélioration
