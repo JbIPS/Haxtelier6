@@ -3,4 +3,4 @@
 -swf bin/MyDialog.swf
 -swf-header 600:400:60:0xFFFFFF
 # Pour de meilleurs traces (numéro de ligne) et debugger
-#-debug
+-debug
