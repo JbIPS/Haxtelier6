@@ -1,5 +1,7 @@
 package ;
 
+import flash.geom.Matrix;
+import flash.display.GradientType;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 import flash.events.MouseEvent;
@@ -11,6 +13,7 @@ import flash.text.TextField;
 
 class MyDialog extends Sprite{
 
+	private var textContainer:Sprite;
 	private var textField: TextField;
 	private var nextButton: SimpleButton;
 	private var choiceButton1: SimpleButton;
@@ -46,13 +49,27 @@ class MyDialog extends Sprite{
 
 		currentPattern = pattern0;
 
+		textContainer = new Sprite();
+		textContainer.x = 100;
+		textContainer.y = 50;
+		// Gradient pour la frime
+		var matrix:Matrix = new Matrix();
+		matrix.createGradientBox(400, 200, Math.PI/2, 0, 0);
+		textContainer.graphics.beginGradientFill(GradientType.LINEAR,[0xDDDDDD, 0x333333],[0.9,0.5],[0x00, 0xFF], matrix);
+		textContainer.graphics.drawRoundRect(0, 0, 400, 200, 10, 10);
+		textContainer.graphics.endFill();
+
 		textField = new TextField();
+		textField.x = 20;
+		textField.y = 20;
+		textField.autoSize = TextFieldAutoSize.LEFT;
+		textContainer.addChild(textField);
 
 		//Dessine le bouton
 		var buttonContent = new Sprite();
 		var shape = new Shape();
 		shape.graphics.beginFill(0x0000FF);
-		shape.graphics.drawRect(0, 0, 100, 50);
+		shape.graphics.drawRoundRect(0, 0, 100, 20, 20, 20);
 		shape.graphics.endFill();
 		var buttonText = new TextField();
 		buttonText.autoSize = TextFieldAutoSize.CENTER;
@@ -74,7 +91,7 @@ class MyDialog extends Sprite{
 		var buttonContent = new Sprite();
 		var shape = new Shape();
 		shape.graphics.beginFill(0xFF0000);
-		shape.graphics.drawRect(0, 0, 100, 50);
+		shape.graphics.drawRoundRect(0, 0, 100, 20, 20, 20);
 		shape.graphics.endFill();
 		var buttonText = new TextField();
 		buttonText.autoSize = TextFieldAutoSize.CENTER;
@@ -94,7 +111,7 @@ class MyDialog extends Sprite{
 		var buttonContent = new Sprite();
 		var shape = new Shape();
 		shape.graphics.beginFill(0x00FF00);
-		shape.graphics.drawRect(0, 0, 100, 50);
+		shape.graphics.drawRoundRect(0, 0, 100, 20, 20, 20);
 		shape.graphics.endFill();
 		var buttonText = new TextField();
 		buttonText.autoSize = TextFieldAutoSize.CENTER;
@@ -117,7 +134,7 @@ class MyDialog extends Sprite{
 
 	private function display():Void
 	{
-		addChild(textField);
+		addChild(textContainer);
 		addChild(nextButton);
 
 		Lib.current.addChild(this);
@@ -150,6 +167,7 @@ class MyDialog extends Sprite{
 					// Ajout du bouton alternatif
 					addChild(choiceButton1);
 					addChild(choiceButton2);
+					removeChild(nextButton);
 				}
 			}
 			else if(currentPattern.next != null){
@@ -168,6 +186,7 @@ class MyDialog extends Sprite{
 				textIndex = 0;
 				removeChild(choiceButton1);
 				removeChild(choiceButton2);
+				addChild(nextButton);
 				displayNextText();
 			}
 		}
